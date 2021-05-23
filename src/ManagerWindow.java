@@ -99,8 +99,10 @@ public class ManagerWindow extends ClientWindow {
         		String[] userList = getUserList();
         		String selectedUser = (String) JOptionPane.showInputDialog(null, "Please select the user to kick out.",
         				null, JOptionPane.QUESTION_MESSAGE, null, userList, null);
-        		int userID = Integer.parseInt(selectedUser.split("(: )|(, )")[1]);
-        		remoteWhiteBoard.removeUser(userID);
+        		if(selectedUser != null) {
+        			int userID = Integer.parseInt(selectedUser.split("(: )|(, )")[1]);
+            		remoteWhiteBoard.removeUser(userID);
+        		}
         		} catch(Exception e) {
         			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Dialog",
 					        JOptionPane.ERROR_MESSAGE);
@@ -119,7 +121,7 @@ public class ManagerWindow extends ClientWindow {
         manageMenu.add(kickout);
 	}
 	
-	public String[] getUserList() throws Exception {
+	private String[] getUserList() throws Exception {
 		ArrayList<String> userList = new ArrayList<String>();
 		Map<Integer, String> userMap = remoteWhiteBoard.getUserMap();
 		for(Map.Entry<Integer, String> user: userMap.entrySet()) {

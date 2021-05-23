@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class ClientWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -19,6 +20,8 @@ public class ClientWindow extends JFrame{
 	private JLabel colorLbl;
 	private JTextField textInput;
 	
+	private JTextField userNameList;
+	
 	private JTextField chatInput;
 	private JButton sendButton;
 	
@@ -31,7 +34,7 @@ public class ClientWindow extends JFrame{
 		GridBagConstraints c;
 		String[] shapes = {"Line", "Circle", "Oval", "Rectangle", "Text"};
 		String[] sizes = {"Small", "Median", "Large"};
-        String[] colors = {"Light Red", "Red", "Dark Red", "Light Blue", "Blue", "Dark Blue", "Light Green",
+        String[] colors = {"Light Red", "Red", "Dark Red", "Light Blue", "Blue", "Dark Blue", "Light Green", 
         		"Green", "Dark Green", "Light Yellow", "Yellow", "Dark Yellow", "Orange", "Grey", "Brown", "Purple", "Black"};
         
 		
@@ -53,8 +56,8 @@ public class ClientWindow extends JFrame{
 
         		String shape = (String) shapeSelection.getSelectedItem();
         		if(shape.equals("Line") || shape.equals("Text")) {
-        			widthSelection.setVisible(false);
         			widthLbl.setVisible(false);
+        			widthSelection.setVisible(false);
         			heightLbl.setVisible(false);
         			heightSelection.setVisible(false);
         			if(shape.equals("Line")) {
@@ -90,6 +93,7 @@ public class ClientWindow extends JFrame{
         add(shapeSelection, c);
         
         widthLbl = new JLabel("Width", SwingConstants.RIGHT);
+        widthLbl.setVisible(false);
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
     	c.gridx = 2;
@@ -97,6 +101,7 @@ public class ClientWindow extends JFrame{
         add(widthLbl, c);
         
         widthSelection = new JComboBox<String>(sizes);
+        widthSelection.setVisible(false);
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
     	c.gridx = 3;
@@ -104,6 +109,7 @@ public class ClientWindow extends JFrame{
         add(widthSelection, c);
         
         heightLbl = new JLabel("Height", SwingConstants.RIGHT);
+        heightLbl.setVisible(false);
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
     	c.gridx = 4;
@@ -111,6 +117,7 @@ public class ClientWindow extends JFrame{
         add(heightLbl, c);
         
         heightSelection = new JComboBox<String>(sizes);
+        heightSelection.setVisible(false);
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
     	c.gridx = 5;
@@ -143,8 +150,19 @@ public class ClientWindow extends JFrame{
     	c.gridx = 0;
     	c.gridy = 1;
     	c.gridwidth = 9;
-    	c.gridheight = 3;
+    	c.gridheight = 2;
     	add(localWhiteBoard, c);
+    	
+    	
+    	userNameList = new JTextField();
+    	userNameList.setPreferredSize(new Dimension(800, 20));
+    	userNameList.setEditable(false);
+    	c = new GridBagConstraints();
+    	c.gridx = 0;
+    	c.gridy = 3;
+    	c.gridwidth = 9;
+    	add(userNameList, c);
+    	
     	
         chatBox = new ChatBox();
         c = new GridBagConstraints();
@@ -272,12 +290,22 @@ public class ClientWindow extends JFrame{
 		try {
 			localWhiteBoard.shapeList = remoteWhiteBoard.getShapeList();
 			chatBox.setText(remoteWhiteBoard.getChatHistory());
+			userNameList.setText("Current online users: " + String.join(", ", getUserNameList()));
 			localWhiteBoard.repaint();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	private ArrayList<String> getUserNameList() throws Exception {
+		ArrayList<String> userNameList = new ArrayList<String>();
+
+		Map<Integer, String> userMap = remoteWhiteBoard.getUserMap();
+		for(Map.Entry<Integer, String> user: userMap.entrySet()) {
+			userNameList.add(user.getValue());
+		}
+		return userNameList;
+	}
 	
 	class DrawLine extends MouseAdapter {
 		private double x1, y1, x2, y2;

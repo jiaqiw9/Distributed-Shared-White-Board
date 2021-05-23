@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.*;
 import javax.swing.*;
 import java.rmi.*;
 import java.rmi.server.*;
@@ -8,7 +9,7 @@ public class RemoteWhiteBoardImpl extends UnicastRemoteObject implements RemoteW
 	
 	// Note that the manager always has count 0 since he is the first user starts the RemoteWhiteBoard.
 	private int userCount = 0;
-	private HashMap<Integer, String> userMap = new HashMap<Integer, String>();
+	private ConcurrentHashMap<Integer, String> userMap = new ConcurrentHashMap<Integer, String>();
 	private ArrayList<ShapeColor> shapeList = new ArrayList<ShapeColor>();
 	private String chatHistory = "";
 	
@@ -16,7 +17,7 @@ public class RemoteWhiteBoardImpl extends UnicastRemoteObject implements RemoteW
 		
 	}
 	
-	public int createUser(String username){
+	public int createUser(String username) {
 		int userID = userCount;
 		userMap.put(userID, username);
 		userCount++;
@@ -24,7 +25,7 @@ public class RemoteWhiteBoardImpl extends UnicastRemoteObject implements RemoteW
 	}
 	
 	public int[] join(String username) throws RemoteException {
-		int n = JOptionPane.showOptionDialog(null, username + " want to join.", "Message",
+		int n = JOptionPane.showOptionDialog(null, username + " wants to share your whiteboard.", null,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		
 		int[] result = new int[2];
@@ -55,28 +56,24 @@ public class RemoteWhiteBoardImpl extends UnicastRemoteObject implements RemoteW
 		return userMap;
 	}
 	
-	public ArrayList<ShapeColor> getShapeList() throws RemoteException {
+	public synchronized ArrayList<ShapeColor> getShapeList() throws RemoteException {
 		return shapeList;
 	}
 	
-	public void addShape(ShapeColor shapeColor) throws RemoteException {
+	public synchronized void addShape(ShapeColor shapeColor) throws RemoteException {
 		shapeList.add(shapeColor);
 	}
 	
 	
-	public void setShapeList(ArrayList<ShapeColor> shapeList) throws RemoteException {
+	public synchronized void setShapeList(ArrayList<ShapeColor> shapeList) throws RemoteException {
 		this.shapeList = shapeList;
 	}
 	
-	public void addChat(String chat) throws RemoteException {
+	public synchronized void addChat(String chat) throws RemoteException {
 		chatHistory += chat;
 	}
 	
-	public String getChatHistory() throws RemoteException {
+	public synchronized String getChatHistory() throws RemoteException {
 		return chatHistory;
-	}
-	
-	public void setChatHistory(String chatHistory) throws RemoteException {
-		this.chatHistory = chatHistory;
 	}
 }

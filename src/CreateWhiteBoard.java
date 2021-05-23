@@ -5,9 +5,8 @@ public class CreateWhiteBoard {
 	public static void main(String[] args) {
 		try {
 			String username = args[2];
-			
 			RemoteWhiteBoardImpl remoteWhiteBoard = new RemoteWhiteBoardImpl();
-			Registry registry = LocateRegistry.getRegistry();
+			Registry registry = LocateRegistry.createRegistry(Integer.parseInt(args[1]));
 			registry.bind("remoteWhiteBoard", remoteWhiteBoard);
 			System.out.println("Whiteboard server ready");
 			

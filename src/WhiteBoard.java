@@ -1,11 +1,10 @@
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.geom.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
 
-public class WhiteBoard extends JPanel implements Serializable {
+public class WhiteBoard extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public ArrayList<ShapeColor> shapeList = new ArrayList<ShapeColor>();
@@ -15,14 +14,6 @@ public class WhiteBoard extends JPanel implements Serializable {
 	public WhiteBoard() {
 		super();
 		setBackground(Color.WHITE);
-		
-		
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-                
-            }
-		});
 	}
 	
 	@Override
@@ -39,9 +30,9 @@ public class WhiteBoard extends JPanel implements Serializable {
         	if(shapeColor.shapeString.equals("Line")) {
                 g2.draw(new Line2D.Double(shapeColor.x1, shapeColor.y1, shapeColor.x2, shapeColor.y2));
         	} else if(shapeColor.shapeString.equals("Oval")) {
-                g2.fill(new Ellipse2D.Double(shapeColor.x1, shapeColor.y1, shapeColor.x2, shapeColor.y2));
+                g2.draw(new Ellipse2D.Double(shapeColor.x1, shapeColor.y1, shapeColor.x2, shapeColor.y2));
         	} else if(shapeColor.shapeString.equals("Rectangle")) {
-                g2.fill(new Rectangle2D.Double(shapeColor.x1, shapeColor.y1, shapeColor.x2, shapeColor.y2));
+                g2.draw(new Rectangle2D.Double(shapeColor.x1, shapeColor.y1, shapeColor.x2, shapeColor.y2));
         	} else if(shapeColor.shapeString.equals("Text")) {
         		g2.drawString(shapeColor.text, (float) shapeColor.x1, (float) shapeColor.y1);
         	}
