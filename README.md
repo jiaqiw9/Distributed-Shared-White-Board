@@ -1,9 +1,4 @@
-::: {.center}
-:::
-
-::: {.center}
-**Distributed White Board**
-:::
+# Distributed White Board
 
 # Introduction
 
@@ -104,10 +99,6 @@ as a user clicked on the send button, it gets and parses text from the
 is to make local whiteboard's `shapeList` and `chatHistory` in sync with
 `remoteWhiteBoard`.
 
-![a client's WhiteBoard](clientWhiteBoard.png){width="\\textwidth"}
-
-![a manager's WhiteBoard](managerWhiteBoard.png){width="\\textwidth"}
-
 ## `ManagerWindow.java`
 
 The manager GUI class extends the client GUI class. It adds a 'File'
@@ -151,6 +142,9 @@ instance variables. The first constructor is for all shapes except texts
 and the second constructor is for texts.
 
 # Class Design
+[class-diagram.pdf](https://github.com/jiaqiw9/Distributed-Shared-White-Board/files/6528799/class-diagram.pdf)
+[sequence-diagram.pdf](https://github.com/jiaqiw9/Distributed-Shared-White-Board/files/6528800/sequence-diagram.pdf)
+
 
 # Evaluation
 
